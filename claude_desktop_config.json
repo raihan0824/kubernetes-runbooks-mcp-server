@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "kubernetes-runbooks": {
+      "command": "uvx",
+      "args": ["--from", "/Users/raihanafiandi/Documents/Lintasarta/repo/create-python-server-main", "kubernetes-runbooks-mcp-server"],
+      "env": {}
+    }
+  }
+} 
