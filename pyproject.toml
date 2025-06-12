@@ -34,9 +34,9 @@ dependencies = [
 kubernetes-runbooks-server = "kubernetes_runbooks_server:cli"
 
 [project.urls]
-Homepage = "https://github.com/raihanafiandi/kubernetes-runbooks-mcp-server"
-Repository = "https://github.com/raihanafiandi/kubernetes-runbooks-mcp-server"
-Issues = "https://github.com/raihanafiandi/kubernetes-runbooks-mcp-server/issues"
+Homepage = "https://github.com/raihan0824/kubernetes-runbooks-mcp-server"
+Repository = "https://github.com/raihan0824/kubernetes-runbooks-mcp-server"
+Issues = "https://github.com/raihan0824/kubernetes-runbooks-mcp-server/issues"
 
 [build-system]
 requires = ["hatchling"]
@@ -51,7 +51,8 @@ include = [
 
 [tool.uv]
 dev-dependencies = [
-    "pyright>=1.1.389", 
+    "pyright>=1.1.389",
     "ruff>=0.7.4",
     "pytest>=7.0.0",
+    "twine>=6.1.0",
 ]
