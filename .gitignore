@@ -164,6 +164,7 @@ cython_debug/
 # Project-specific files
 demo.py
 test_server.py
+test_kubernetes_runbooks_server.py
 *.pyc
 
 # PyPI configuration (contains sensitive tokens)

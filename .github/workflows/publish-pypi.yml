@@ -1,12 +1,17 @@
-name: Publishing
+name: Publish to PyPI
 
 on:
   release:
     types: [published]
+  workflow_dispatch:  # Allow manual triggering
 
 jobs:
+  checks:
+    name: Run all checks
+    uses: ./.github/workflows/shared.yml
+
   release-build:
-    name: Build distribution
+    name: Build distribution packages
     runs-on: ubuntu-latest
     needs: [checks]
     steps:
@@ -14,6 +19,8 @@ jobs:
 
     - name: Install uv
       uses: astral-sh/setup-uv@v3
+      with:
+        enable-cache: true
 
     - name: "Set up Python"
       uses: actions/setup-python@v5
@@ -23,33 +30,39 @@ jobs:
     - name: Install the project
       run: uv sync --frozen --all-extras --dev
 
-    - name: Build
+    - name: Build distribution packages
       run: uv build
 
-    - name: Upload artifacts
+    - name: Verify packages
+      run: uv run --frozen twine check dist/*
+
+    - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
         name: release-dists
         path: dist/
-
-  checks:
-    uses: ./.github/workflows/shared.yml
+        retention-days: 30
 
   pypi-publish:
-    name: Upload release to PyPI
+    name: Publish to PyPI
     runs-on: ubuntu-latest
-    environment: release
-    needs:
-      - release-build
+    environment: 
+      name: release
+      url: https://pypi.org/project/kubernetes-runbooks-mcp-server/
+    needs: [release-build]
     permissions:
-      id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing
+      id-token: write  # IMPORTANT: mandatory for trusted publishing
+      contents: read
 
     steps:
-    - name: Retrieve release distributions
+    - name: Download build artifacts
       uses: actions/download-artifact@v4
       with:
         name: release-dists
         path: dist/
 
-    - name: Publish package distributions to PyPI
+    - name: Publish to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        print-hash: true
+        verbose: true
